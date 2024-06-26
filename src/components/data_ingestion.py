@@ -12,6 +12,8 @@ from src.components.data_transformation import DataTranformationConfig
    that informs the data ingestion component to know where to store the paths of the 
    train,test and raw data  
 '''
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
 @dataclass # allows to directly declare variables and their datatypes in a class
 class DataIngestionConfig:
     train_data_path:str = os.path.join('artifacts','train.csv')
@@ -49,5 +51,9 @@ class DataIngestion:
 if __name__=="__main__":
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
+    
     data_transformation=DataTransformation()
-    data_transformation.initiate_transformation(train_data,test_data)
+    train_array,test_array,_=data_transformation.initiate_transformation(train_data,test_data)
+    
+    modelTrainer=ModelTrainer()
+    print(modelTrainer.initiate_model_trainer(train_array=train_array,test_array=test_array))
